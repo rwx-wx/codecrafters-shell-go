@@ -18,6 +18,9 @@ func main() {
 			fmt.Print("error", err)
 		}
 		cleanCommand := strings.TrimSpace(command)
+		if cleanCommand == "exit" {
+			return
+		}
 		fmt.Print(cleanCommand, ": command not found\n")
 	}
 }
