@@ -12,7 +12,7 @@ import (
 
 func main() {
 
-	builtin := []string{"exit", "type", "echo", "pwd"}
+	builtin := []string{"exit", "type", "echo", "pwd", "cd"}
 
 	for {
 		fmt.Print("$ ")
@@ -42,6 +42,15 @@ func main() {
 				fmt.Print("error")
 			}
 			fmt.Println(cwd)
+			continue
+		}
+		if strings.HasPrefix(command, "cd") {
+			dirName, err := os.Stat(command[3:])
+			if err != nil {
+				fmt.Print(dirName.Name(), ": directory doesn't exit")
+			}
+
+			os.Chdir(dirName.Name());
 			continue
 		}
 		if strings.HasPrefix(command, "echo ") {
