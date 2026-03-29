@@ -45,7 +45,7 @@ func main() {
 			continue
 		}
 		if strings.HasPrefix(command, "cd") {
-			dirName, err := os.Stat(command[3:])
+			dirName, err := os.Stat(command[2:])
 			if err != nil {
 				fmt.Print(dirName.Name(), ": directory doesn't exit")
 			}
