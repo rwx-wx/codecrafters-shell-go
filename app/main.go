@@ -52,6 +52,7 @@ func main() {
 			dirName, err := os.Stat(args[0])
 			if err != nil {
 				fmt.Print("cd: ", args[0], ": No such file or directory\n")
+				continue
 			}
 
 			if dirName.IsDir() {
