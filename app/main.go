@@ -45,12 +45,13 @@ func main() {
 			continue
 		}
 		if strings.HasPrefix(command, "cd") {
-			dirName, err := os.Stat(command[2:])
-			if err != nil {
-				fmt.Print(dirName.Name(), ": directory doesn't exit")
+			dirName, err := os.Stat(cleanCommand[3:])
+			// if err != nil {
+			// 	fmt.Print(dirName.Name(), ": directory doesn't exit")
+			// }
+			if err == nil {
+				os.Chdir(dirName.Name())
 			}
-
-			os.Chdir(dirName.Name());
 			continue
 		}
 		if strings.HasPrefix(command, "echo ") {
