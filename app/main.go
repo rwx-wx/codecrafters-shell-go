@@ -88,10 +88,11 @@ func runCommand(parts []string, redirect *Redirect) {
 			cmd.Stderr = f
 		}
 	}
+	cmd.Run()
 
-	if err := cmd.Run(); err != nil {
-		fmt.Fprintf(os.Stderr, "%v\n", err)
-	}
+	// if err := cmd.Run(); err != nil {
+	// 	fmt.Fprintf(os.Stderr, "%v\n", err)
+	// }
 }
 
 func main() {
