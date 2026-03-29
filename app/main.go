@@ -85,6 +85,7 @@ func main() {
 			if err != nil {
 				log.Fatal(err)
 			}
+			continue
 		}
 		if parts[0] == "echo" {
 			fmt.Println(strings.Join(parts[1:], " "))
