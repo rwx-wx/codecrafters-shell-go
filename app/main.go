@@ -57,7 +57,7 @@ func main() {
 			// fmt.Println(dirName.Name())
 
 			if dirName.IsDir() {
-				os.Chdir(dirName.Name())
+				os.Chdir(args[0])
 			}
 			continue
 		}
