@@ -3,14 +3,13 @@ package main
 import (
 	"bufio"
 	"fmt"
+	"log"
 	"os"
 	"os/exec"
 	"slices"
 	"strings"
 )
 
-// Ensures gofmt doesn't remove the "fmt" import in stage 1 (feel free to remove this!)
-var _ = fmt.Print
 
 func main() {
 
@@ -37,6 +36,13 @@ func main() {
 				fmt.Print(cleanCommand[5:], ": not found\n")
 			}
 			continue
+		}
+		if path, err := exec.LookPath(cleanCommand[5:]); err == nil {
+				out, err:= exec.Command(path).Output()
+				if err!= nil {
+					log.Fatal()
+				}
+				fmt.Println(out)
 		}
 		if strings.HasPrefix(command, "echo ") {
 			fmt.Print(command[5:])
