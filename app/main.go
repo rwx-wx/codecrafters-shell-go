@@ -3,7 +3,6 @@ package main
 import (
 	"bufio"
 	"fmt"
-	"log"
 	"os"
 	"os/exec"
 	"slices"
@@ -37,17 +36,29 @@ func main() {
 			}
 			continue
 		}
-		if path, err := exec.LookPath(cleanCommand[5:]); err == nil {
-				out, err:= exec.Command(path).Output()
-				if err!= nil {
-					log.Fatal()
-				}
-				fmt.Println(out)
-		}
 		if strings.HasPrefix(command, "echo ") {
 			fmt.Print(command[5:])
 		} else {
-			fmt.Print(cleanCommand, ": command not found\n")
+
+			parts := strings.Fields(cleanCommand)
+
+			if len(parts) > 0 {
+				cmdName := parts[0]
+				args := parts[1:]
+
+				if path, err:= exec.LookPath(cmdName); err == nil {
+					cmd := exec.Command(cmdName, args...) // variadics very cool
+					cmd.Path = path
+					out, err:= cmd.CombinedOutput()
+					if err != nil {
+						fmt.Println(cleanCommand, ": command not found\n")
+					} else {
+						fmt.Print(string(out))
+					}
+				} else {
+					fmt.Print(cleanCommand, ": command not found\n")
+				}
+			}
 		}		
 	}
 }
