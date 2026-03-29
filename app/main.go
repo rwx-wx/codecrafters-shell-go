@@ -11,11 +11,13 @@ import (
 var _ = fmt.Print
 
 func main() {
-	fmt.Print("$ ")
-	command, err:= bufio.NewReader(os.Stdin).ReadString('\n')
-	if err != nil {
-		fmt.Print("error", err)
+	for {
+		fmt.Print("$ ")
+		command, err:= bufio.NewReader(os.Stdin).ReadString('\n')
+		if err != nil {
+			fmt.Print("error", err)
+		}
+		cleanCommand := strings.TrimSpace(command)
+		fmt.Print(cleanCommand, ": command not found\n")
 	}
-	cleanCommand := strings.TrimSpace(command)
-	fmt.Print(cleanCommand, ": command not found")
 }
