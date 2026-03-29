@@ -12,7 +12,7 @@ import (
 
 func main() {
 
-	builtin := []string{"exit", "type", "echo"}
+	builtin := []string{"exit", "type", "echo", "pwd"}
 
 	for {
 		fmt.Print("$ ")
