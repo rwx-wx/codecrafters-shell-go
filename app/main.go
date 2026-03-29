@@ -17,5 +17,5 @@ func main() {
 		fmt.Print("error", err)
 	}
 	cleanCommand := strings.TrimSpace(command)
-	fmt.Print("{",cleanCommand,"}: command not found")
+	fmt.Print(cleanCommand, ": command not found")
 }
