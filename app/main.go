@@ -36,6 +36,14 @@ func main() {
 			}
 			continue
 		}
+		if strings.HasPrefix(command, "pwd") {
+			cwd, err:= os.Getwd() 
+			if err != nil {
+				fmt.Print("error")
+			}
+			fmt.Println(cwd)
+			continue
+		}
 		if strings.HasPrefix(command, "echo ") {
 			fmt.Print(command[5:])
 		} else {
@@ -51,7 +59,7 @@ func main() {
 					cmd.Path = path
 					out, err:= cmd.CombinedOutput()
 					if err != nil {
-						fmt.Println(cleanCommand, ": command not found\n")
+						fmt.Print(cleanCommand, ": command not found\n")
 					} else {
 						fmt.Print(string(out))
 					}
