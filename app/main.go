@@ -50,8 +50,13 @@ func main() {
 			args := parts[1:]
 			
 			dirName, err := os.Stat(args[0])
+			if err != nil {
+				fmt.Print("file doesn't exist")
+				return
+			}
+			// fmt.Println(dirName.Name())
 
-			if dirName.IsDir() && err == nil {
+			if dirName.IsDir() {
 				os.Chdir(dirName.Name())
 			}
 			continue
