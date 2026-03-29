@@ -48,6 +48,13 @@ func main() {
 			parts := strings.Fields(command)
 
 			args := parts[1:]
+
+			if args[0] == "~" {
+				if homedir, err :=os.UserHomeDir(); err == nil {
+					os.Chdir(homedir) 
+					continue
+				}
+			}
 			
 			dirName, err := os.Stat(args[0])
 			if err != nil {
