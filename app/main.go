@@ -31,7 +31,7 @@ func main() {
 			if slices.Contains(builtin, cleanCommand[5:]) {
 				fmt.Print(cleanCommand[5:], " is a shell builtin\n")
 			} else {
-				fmt.Print(cleanCommand[5:], ": command not found\n")
+				fmt.Print(cleanCommand[5:], ": not found\n")
 			}
 			continue
 		}
