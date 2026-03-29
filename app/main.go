@@ -22,6 +22,7 @@ func main() {
 		}
 
 		cleanCommand := strings.TrimSpace(command)
+		parts := parseArgs(cleanCommand) // was strings.Fields(cleanCommand)
 
 		if cleanCommand == "exit" {
 			return
@@ -67,15 +68,19 @@ func main() {
 			}
 			continue
 		}
-		if strings.HasPrefix(command, "echo ") {
-			fmt.Print(command[5:])
+		if parts[0] == "echo" {
+			fmt.Println(strings.Join(parts[1:], " "))
+			continue
 		} else {
-
-			parts := strings.Fields(cleanCommand)
+		// if strings.HasPrefix(command, "echo ") {
+		// 	fmt.Print(command[5:])
+		// } else {
 
 			if len(parts) > 0 {
 				cmdName := parts[0]
+				
 				args := parts[1:]
+
 
 				if path, err:= exec.LookPath(cmdName); err == nil {
 					cmd := exec.Command(cmdName, args...) // variadics very cool
@@ -92,4 +97,45 @@ func main() {
 			}
 		}		
 	}
+}
+
+func parseArgs(input string) []string {
+	var args []string
+	var current strings.Builder
+	inSingle := false
+	inDouble := false
+
+	for i := 0; i < len(input); i++ {
+		ch := input[i]
+		switch {
+		case ch == '\'' && !inDouble:
+			inSingle = !inSingle
+		case ch == '"' && !inSingle:
+			inDouble = !inDouble
+		case ch == '\\' && inDouble && i+1 < len(input):
+			// Inside double quotes, backslash only escapes specific chars
+			next := input[i+1]
+			if next == '"' || next == '\\' || next == '$' || next == '\n' {
+				current.WriteByte(next)
+				i++
+			} else {
+				current.WriteByte(ch)
+			}
+		case ch == '\\' && !inSingle && !inDouble && i+1 < len(input):
+			// Outside quotes, backslash escapes the next char literally
+			current.WriteByte(input[i+1])
+			i++
+		case (ch == ' ' || ch == '\t') && !inSingle && !inDouble:
+			if current.Len() > 0 {
+				args = append(args, current.String())
+				current.Reset()
+			}
+		default:
+			current.WriteByte(ch)
+		}
+	}
+	if current.Len() > 0 {
+		args = append(args, current.String())
+	}
+	return args
 }
