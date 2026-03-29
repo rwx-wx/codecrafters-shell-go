@@ -45,11 +45,13 @@ func main() {
 			continue
 		}
 		if strings.HasPrefix(command, "cd") {
-			dirName, err := os.Stat(cleanCommand[3:])
-			// if err != nil {
-			// 	fmt.Print(dirName.Name(), ": directory doesn't exit")
-			// }
-			if err == nil {
+			parts := strings.Fields(command)
+
+			args := parts[1:]
+			
+			dirName, err := os.Stat(args[0])
+
+			if dirName.IsDir() && err == nil {
 				os.Chdir(dirName.Name())
 			}
 			continue
