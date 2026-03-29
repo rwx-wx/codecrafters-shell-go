@@ -17,10 +17,15 @@ func main() {
 		if err != nil {
 			fmt.Print("error", err)
 		}
+
 		cleanCommand := strings.TrimSpace(command)
 		if cleanCommand == "exit" {
 			return
 		}
-		fmt.Print(cleanCommand, ": command not found\n")
+		if strings.HasPrefix(command, "echo ") {
+			fmt.Print(command[5:])
+		} else {
+			fmt.Print(cleanCommand, ": command not found\n")
+		}		
 	}
 }
