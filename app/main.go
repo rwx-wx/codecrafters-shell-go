@@ -77,7 +77,7 @@ func runCommand(parts []string, redirect *Redirect) {
 	if redirect != nil {
 		f, err := openRedirectFile(redirect)
 		if err != nil {
-			log.Fatal(err)
+			fmt.Println(err)
 		}
 		defer f.Close()
 
@@ -90,7 +90,6 @@ func runCommand(parts []string, redirect *Redirect) {
 	}
 
 	if err := cmd.Run(); err != nil {
-		// Don't fatal — non-zero exit is normal (e.g. grep no match)
 		fmt.Fprintf(os.Stderr, "%v\n", err)
 	}
 }
@@ -172,7 +171,7 @@ func main() {
 				if redirect.fd == 1 {
 					fmt.Fprint(f, output)
 				} else {
-					fmt.Print(output) // echo doesn't write to stderr normally
+					fmt.Print(output) 
 				}
 			} else {
 				fmt.Print(output)
