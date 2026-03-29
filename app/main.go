@@ -3,6 +3,7 @@ package main
 import (
 	"bufio"
 	"fmt"
+	"log"
 	"os"
 	"os/exec"
 	"slices"
@@ -68,19 +69,30 @@ func main() {
 			}
 			continue
 		}
+		if parts[2] == ">" || parts[2] == "1>" {
+			cmd := exec.Command(cleanCommand) 
+
+			outfile, err:= os.Create(parts[3])
+
+			if err != nil {
+				log.Fatal(err)
+			}
+			defer outfile.Close()
+
+			cmd.Stdout = outfile
+
+			err = cmd.Run()
+			if err != nil {
+				log.Fatal(err)
+			}
+		}
 		if parts[0] == "echo" {
 			fmt.Println(strings.Join(parts[1:], " "))
 			continue
 		} else {
-		// if strings.HasPrefix(command, "echo ") {
-		// 	fmt.Print(command[5:])
-		// } else {
-
 			if len(parts) > 0 {
 				cmdName := parts[0]
-				
 				args := parts[1:]
-
 
 				if path, err:= exec.LookPath(cmdName); err == nil {
 					cmd := exec.Command(cmdName, args...) // variadics very cool
